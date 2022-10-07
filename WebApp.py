@@ -5,7 +5,8 @@ import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
-import git
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 
 teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
@@ -42,9 +43,15 @@ if authentication_state:
             choice = st.sidebar.selectbox("Menu",menu)
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
-            if st.button("Aggiorna Database"):
-                repo = git.Repo("/Users/saba/Documents/Corsi/Udemy/Python_2/Python_2_env/Flight_Team/flight-team-webapp")
-                repo.remotes.origin.pull()
+            if st.sidebar.button("Aggiorna Database"):
+                gauth = GoogleAuth()
+                drive = GoogleDrive(gauth)
+                upload_db = '/Users/saba/Documents/Corsi/Udemy/Python_2/Python_2_env/Flight_Team/flight-team-webapp/Tasks.db'
+                gfile = drive.CreateFile({'parents': [{'id': '1dtzc8LQ4Xc0sgh2fjmZJmbqyXLjfkqxu?hl=it'}]})
+                gfile.SetContentFile(upload_db)
+                gfile.Upload()
+
+
 
 
             create_table(team)
