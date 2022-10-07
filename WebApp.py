@@ -5,6 +5,7 @@ import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
+import git
 
 
 teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
@@ -41,6 +42,9 @@ if authentication_state:
             choice = st.sidebar.selectbox("Menu",menu)
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
+            if st.button("Aggiungi"):
+                repo = git.Repo("/Users/saba/Documents/Corsi/Udemy/Python_2/Python_2_env/Flight_Team/flight-team-webapp")
+                repo.remotes.origin.pull()
 
 
             create_table(team)
