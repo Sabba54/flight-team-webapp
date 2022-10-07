@@ -43,8 +43,8 @@ def local_css(file_name):
 st.title('Sapienza Flight Team WebApp ✈️')
 local_css("style/style.css")
 
-teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
-usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN']
+teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE','VISION','ROVER']
+usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN','VISION_team','ROVER_team']
 
 file_path = Path(__file__).parent / "hashed_pw.pkl"
 with file_path.open("rb") as file:
@@ -196,21 +196,25 @@ if authentication_state:
             st.sidebar.title(f"Benvenuto {team}")
 
             if choice == 'Situazione dei team':
-                st.subheader("Situazione task dei team")
-                selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE'],)
+                st.subheader("Status dei task")
+                selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','ROVER'])
                 result = view_all_task(selected_team)
                 df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza"])
-                with st.expander("Visualizza tutti i task"):
+                with st.expander("Status dei task del singolo team"):
                     st.dataframe(df)
 
-                with st.expander("Status dei task"):
+                with st.expander("Status dei task di tutti i team"):
                     df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data di scadenza"])
                     df_cad['TEAM'] = 'CAD'
                     df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data di scadenza"])
                     df_sftw['TEAM'] = 'SFTW'
                     df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data di scadenza"])
                     df_hrdw['TEAM'] = 'HRDW'
-                    frames = [df_cad, df_sftw, df_hrdw]
+                    df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data di scadenza"])
+                    df_vision['TEAM'] = 'VISION'
+                    df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data di scadenza"])
+                    df_rover['TEAM'] = 'ROVER'
+                    frames = [df_cad, df_sftw, df_hrdw,df_vision,df_rover]
                     df_final = pd.concat(frames)
                     pl = px.bar(df_final,x='TEAM',color='Status')
                     st.plotly_chart(pl)
