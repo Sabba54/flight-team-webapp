@@ -8,7 +8,6 @@ import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
 import smtplib
-from email import message
 from email.mime.text import MIMEText
 from email.mime.multipart import  MIMEMultipart
 from email.mime.application import MIMEApplication
@@ -49,8 +48,6 @@ def send_email():
         attachment = MIMEApplication(f.read(),Name=basename(filename))
         attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
     msg.attach(attachment)
-
-
     server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
     server.ehlo()
     server.starttls()
@@ -76,13 +73,6 @@ if authentication_state:
             choice = st.sidebar.selectbox("Menu",menu)
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
-            if st.sidebar.button("Aggiorna Database"):
-                send_email()
-                st.success("Database Updated")
-
-
-
-
 
             create_table(team)
 
