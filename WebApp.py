@@ -45,7 +45,7 @@ def send_email():
     body = MIMEText(content,'plain')
     msg.attach(body)
     filename = 'Tasks.db'
-    with open(filename,'r') as f:
+    with open(filename,'r',encoding='windows-1252',) as f:
         attachment = MIMEApplication(f.read(),Name=basename(filename))
         attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
     msg.attach(attachment)
