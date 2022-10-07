@@ -34,8 +34,8 @@ def local_css(file_name):
 local_css("style/style.css")
 
 def send_email():
-    from_addr = 'justninjalion@gmail.com'
-    to_addr = 'matteo-sabatini@live.it'
+    to_addr = 'justninjalion@gmail.com'
+    from_addr = 'matteo-sabatini@live.it'
     subject = 'Updated DB'
     content = '...'
     msg = MIMEMultipart()
