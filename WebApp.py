@@ -34,7 +34,7 @@ def local_css(file_name):
 local_css("style/style.css")
 
 def send_email():
-    to_addr = 'justninjalion@gmail.com'
+    to_addr = 'sabatini.1834805@studenti.uniroma1.it'
     from_addr = 'matteo-sabatini@live.it'
     subject = 'Updated DB'
     content = '...'
