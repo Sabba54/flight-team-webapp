@@ -1,3 +1,5 @@
+import ssl
+
 import streamlit as st
 import pandas as pd
 from db_fxn import create_table,add_task,view_all_task,view_unique_task,get_task,edit_task_data,delete_task
@@ -48,12 +50,9 @@ def send_email():
         attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
     msg.attach(attachment)
 
-
+    context = ssl.create_default_context()
     server = smtplib.SMTP('smtp.gmail.com',587)
-    server.connect("smtp.gmail.com",587)
-    server.ehlo()
-    server.starttls()
-    server.ehlo()
+    server.starttls(context=context)
     server.login(from_addr,'Sapienza1834805')
     server.send_message(msg,from_addr=from_addr,to_addrs=[to_addr])
     server.quit()
