@@ -42,7 +42,7 @@ if authentication_state:
             choice = st.sidebar.selectbox("Menu",menu)
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
-            if st.button("Aggiungi"):
+            if st.button("Aggiorna Database"):
                 repo = git.Repo("/Users/saba/Documents/Corsi/Udemy/Python_2/Python_2_env/Flight_Team/flight-team-webapp")
                 repo.remotes.origin.pull()
 
