@@ -5,7 +5,7 @@ import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
-
+from git import Repo
 
 
 teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
@@ -43,7 +43,11 @@ if authentication_state:
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
             if st.sidebar.button("Aggiorna Database"):
-                pass
+                repo = Repo('.')
+                repo.index.add('Tasks.db')
+                repo.git.commit("Updating DB")
+                repo.git.push("origin","HEAD:refs/for/master")
+                st.success("Database aggiornato")
 
 
 
