@@ -5,7 +5,12 @@ import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
-from git import Repo
+import smtplib
+from email import message
+from email.mime.text import MIMEText
+from email.mime.multipart import  MIMEMultipart
+from email.mime.application import MIMEApplication
+from os.path import basename
 
 
 teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
@@ -26,6 +31,30 @@ def local_css(file_name):
 
 local_css("style/style.css")
 
+def send_email():
+    from_addr = 'justninjalion@gmail.com'
+    to_addr = 'matteo-sabatini@live.it'
+    subject = 'Updated DB'
+    content = '...'
+    msg = MIMEMultipart()
+    msg['From'] = from_addr
+    msg['To'] = to_addr
+    msg['Subject'] = subject
+    body = MIMEText(content,'plain')
+    msg.attach(body)
+    filename = 'Tasks.db'
+    with open(filename,'r') as f:
+        attachment = MIMEApplication(f.read(),Name=basename(filename))
+        attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
+    msg.attach(attachment)
+
+
+    server = smtplib.SMTP('smtp.gmail.com',587)
+    server.login(from_addr,'Sapienza1834805')
+    server.send_message(msg,from_addr=from_addr,to_addrs=[to_addr])
+
+
+
 
 if authentication_state == False:
     st.error("Username o Password errati")
@@ -43,7 +72,8 @@ if authentication_state:
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
             if st.sidebar.button("Aggiorna Database"):
-                pass
+                send_email()
+                st.success("Database Updated")
 
 
 
