@@ -45,7 +45,7 @@ if authentication_state:
             if st.sidebar.button("Aggiorna Database"):
                 repo = Repo('.')
                 repo.index.add('Tasks.db')
-                repo.git.commit("Updating DB")
+                repo.git.commit("-a")
                 repo.git.push("origin","HEAD:refs/for/master")
                 st.success("Database aggiornato")
 
