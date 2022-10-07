@@ -50,11 +50,11 @@ def send_email():
         attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
     msg.attach(attachment)
 
-    
+
     server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
     server.ehlo()
     server.starttls()
-    server.login(from_addr,'Sapienza1834805')
+    server.login(from_addr,'okfwillbzcwfacdf')
     server.send_message(msg,from_addr=from_addr,to_addrs=[to_addr])
     server.quit()
 
