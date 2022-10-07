@@ -43,11 +43,8 @@ if authentication_state:
             authenticator.logout("Logout","sidebar")
             st.sidebar.title(f"Benvenuto {team}")
             if st.sidebar.button("Aggiorna Database"):
-                repo = Repo('.')
-                repo.index.add('Tasks.db')
-                repo.git.commit("-m Updated Database")
-                repo.git.push("origin","HEAD:refs/for/master")
-                st.success("Database aggiornato")
+                pass
+
 
 
 
