@@ -3,7 +3,7 @@ import sqlite3
 
 conn = sqlite3.connect("Tasks.db")
 c = conn.cursor()
-c.execute('pragma encoding')
+
 
 def create_table(team):
     c.execute(f'CREATE TABLE IF NOT EXISTS {team}taskstable(task TEXT,task_status TEXT, task_due_date DATE)')
