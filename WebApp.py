@@ -13,25 +13,6 @@ from email.mime.multipart import  MIMEMultipart
 from email.mime.application import MIMEApplication
 from os.path import basename
 
-
-teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
-usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN']
-
-file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("rb") as file:
-    hashed_passwords = pickle.load(file)
-
-authenticator = stauth.Authenticate(teams,usernames,hashed_passwords,"FT_WebApp","abcdef",cookie_expiry_days=1)
-
-st.title('Sapienza Flight Team WebApp ✈️')
-team,authentication_state,username = authenticator.login("Login","main")
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}<style>",unsafe_allow_html=True)
-
-local_css("style/style.css")
-
 def send_email():
     to_addr = 'sabatini.1834805@studenti.uniroma1.it'
     from_addr = 'matteo-sabatini@live.it'
@@ -55,8 +36,22 @@ def send_email():
     server.send_message(msg,from_addr=from_addr,to_addrs=[to_addr])
     server.quit()
 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}<style>",unsafe_allow_html=True)
 
+st.title('Sapienza Flight Team WebApp ✈️')
+local_css("style/style.css")
 
+teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE']
+usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN']
+
+file_path = Path(__file__).parent / "hashed_pw.pkl"
+with file_path.open("rb") as file:
+    hashed_passwords = pickle.load(file)
+
+authenticator = stauth.Authenticate(teams,usernames,hashed_passwords,"FT_WebApp","abcdef",cookie_expiry_days=1)
+team,authentication_state,username = authenticator.login("Login","main")
 
 if authentication_state == False:
     st.error("Username o Password errati")
@@ -65,7 +60,7 @@ if authentication_state == None:
     st.warning("Perfavore, inserisci username e password")
 
 if authentication_state:
-    if team in ['CAD','SOFTWARE','HARDWARE']:
+    if team in ['CAD','SOFTWARE','HARDWARE','VISION','ROVER']:
 
 
         def main():
