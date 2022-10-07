@@ -51,7 +51,7 @@ def send_email():
     msg.attach(attachment)
 
     context = ssl.create_default_context()
-    server = smtplib.SMTP('smtp.gmail.com',587)
+    server = smtplib.SMTP('smtp-mail.outlook.com', port=587)
     server.starttls(context=context)
     server.login(from_addr,'Sap1834805-')
     server.send_message(msg,from_addr=from_addr,to_addrs=[to_addr])
