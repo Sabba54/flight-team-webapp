@@ -3,7 +3,6 @@ import ssl
 import streamlit as st
 import pandas as pd
 from db_fxn import create_table,add_task,view_all_task,view_unique_task,get_task,edit_task_data,delete_task
-from db_import_fxn import create_new_db
 import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
@@ -86,14 +85,14 @@ if authentication_state:
                     task_due_date = st.date_input("Data di scadenza")
 
                 if st.button("Aggiungi"):
-                    add_task(team,task,task_status,task_due_date)
+                    add_task(team,task,task_status,task_due_date,team)
                     st.success("Task aggiunta correttamente!")
 
 
             elif choice == "Visualizza Task":
                 st.subheader("Visualizza le Task inserite 📊")
                 result = view_all_task(team)
-                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result, columns=["Task", "Status", "Data_scadenza","Team"])
                 with st.expander("Visualizza tutti i task"):
                     st.dataframe(df)
 
@@ -200,33 +199,27 @@ if authentication_state:
                 st.subheader("Status dei task")
                 selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','ROVER'])
                 result = view_all_task(selected_team)
-                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result, columns=["Task", "Status", "Data_scadenza","Team"])
                 with st.expander("Status dei task del singolo team"):
                     st.dataframe(df)
 
-                df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data di scadenza"])
-                df_cad['TEAM'] = 'CAD'
-                df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data di scadenza"])
-                df_sftw['TEAM'] = 'SFTW'
-                df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data di scadenza"])
-                df_hrdw['TEAM'] = 'HRDW'
-                df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data di scadenza"])
-                df_vision['TEAM'] = 'VISION'
-                df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data di scadenza"])
-                df_rover['TEAM'] = 'ROVER'
+                df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data_scadenza","Team"])
+                df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
+                df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
+                df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data_scadenza","Team"])
+                df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data_scadenza","Team"])
                 frames = [df_cad, df_sftw, df_hrdw, df_vision, df_rover]
                 database_tasks = pd.concat(frames)
 
                 with st.expander("Status dei task di tutti i team"):
 
-                    pl = px.bar(database_tasks,x='TEAM',color='Status')
+                    pl = px.bar(database_tasks,x='Team',color='Status')
                     st.plotly_chart(pl)
 
             if st.sidebar.button("Esporta database"):
-                database_tasks.to_csv('database_tasks.csv')
+                database_tasks.to_csv('database_tasks.csv',index=False)
                 send_email()
                 st.success("Database esportato correttamente")
-                create_new_db()
 
 
 

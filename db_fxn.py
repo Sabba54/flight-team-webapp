@@ -6,10 +6,10 @@ c = conn.cursor()
 
 
 def create_table(team):
-    c.execute(f'CREATE TABLE IF NOT EXISTS {team}taskstable(task TEXT,task_status TEXT, task_due_date DATE)')
+    c.execute(f'CREATE TABLE IF NOT EXISTS {team}taskstable(task TEXT,task_status TEXT, task_due_date DATE, teams TEXT)')
 
-def add_task(team,task,task_status,task_due_date):
-    c.execute(f'INSERT INTO {team}taskstable(task,task_status,task_due_date) VALUES (?,?,?)',(task,task_status,task_due_date))
+def add_task(team,task,task_status,task_due_date,teams):
+    c.execute(f'INSERT INTO {team}taskstable(task,task_status,task_due_date,teams) VALUES (?,?,?,?)',(task,task_status,task_due_date,teams))
     conn.commit()
 
 def view_all_task(team):
