@@ -1,0 +1,28 @@
+,Task,Status,Data di scadenza,TEAM
+0,Task del cad n.1,Da fare,2022-10-28,CAD
+1,Task del cad n.2,In corso,2022-10-14,CAD
+2,Task del cad n.3,In corso,2022-10-14,CAD
+3,Task del cad n.4,Da fare,2022-10-19,CAD
+4,Task del cad n.5,Terminata,2022-10-05,CAD
+0,Software task 1,Terminata,2022-10-03,SFTW
+1,Software task 2,Terminata,2022-10-04,SFTW
+2,Software task 3,Da fare,2022-10-30,SFTW
+3,Software task 4,In corso,2022-10-27,SFTW
+0,Task Hardware 1,Da fare,2022-10-25,HRDW
+1,Task Hardware 2,Da fare,2022-10-25,HRDW
+2,Task Hardware 3,In corso,2022-10-20,HRDW
+3,Task Hardware 4,In corso,2022-10-20,HRDW
+4,Task Hardware 5,In corso,2022-10-02,HRDW
+0,Vision 1,Da fare,2022-10-07,VISION
+1,vision task 1,Terminata,2022-10-02,VISION
+2,vision task 2,In corso,2022-12-22,VISION
+3,vision task 3,In corso,2022-10-27,VISION
+4,vision task 4,In corso,2022-10-27,VISION
+5,vision task 5,In corso,2022-10-27,VISION
+6,vision task 6,In corso,2022-10-24,VISION
+0,Rover1,Terminata,2022-10-07,ROVER
+1,rover task 1,Terminata,2022-10-07,ROVER
+2,rover task 2,Terminata,2022-10-07,ROVER
+3,rover task 3,Terminata,2022-10-07,ROVER
+4,Rover task 5,Da fare,2022-10-27,ROVER
+5,Rover task 6,In corso,2022-10-26,ROVER

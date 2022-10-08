@@ -24,8 +24,8 @@ def send_email():
     msg['Subject'] = subject
     body = MIMEText(content,'plain')
     msg.attach(body)
-    filename = 'Tasks.db'
-    with open(filename,'r',encoding='iso-8859-1') as f:
+    filename = 'database_tasks.csv'
+    with open(filename,'r') as f:
         attachment = MIMEApplication(f.read(),Name=basename(filename))
         attachment['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
     msg.attach(attachment)
@@ -203,21 +203,28 @@ if authentication_state:
                 with st.expander("Status dei task del singolo team"):
                     st.dataframe(df)
 
+                df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data di scadenza"])
+                df_cad['TEAM'] = 'CAD'
+                df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data di scadenza"])
+                df_sftw['TEAM'] = 'SFTW'
+                df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data di scadenza"])
+                df_hrdw['TEAM'] = 'HRDW'
+                df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data di scadenza"])
+                df_vision['TEAM'] = 'VISION'
+                df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data di scadenza"])
+                df_rover['TEAM'] = 'ROVER'
+                frames = [df_cad, df_sftw, df_hrdw, df_vision, df_rover]
+                database_tasks = pd.concat(frames)
+
                 with st.expander("Status dei task di tutti i team"):
-                    df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data di scadenza"])
-                    df_cad['TEAM'] = 'CAD'
-                    df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data di scadenza"])
-                    df_sftw['TEAM'] = 'SFTW'
-                    df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data di scadenza"])
-                    df_hrdw['TEAM'] = 'HRDW'
-                    df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data di scadenza"])
-                    df_vision['TEAM'] = 'VISION'
-                    df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data di scadenza"])
-                    df_rover['TEAM'] = 'ROVER'
-                    frames = [df_cad, df_sftw, df_hrdw,df_vision,df_rover]
-                    df_final = pd.concat(frames)
-                    pl = px.bar(df_final,x='TEAM',color='Status')
+
+                    pl = px.bar(database_tasks,x='TEAM',color='Status')
                     st.plotly_chart(pl)
+
+            if st.sidebar.button("Esporta database"):
+                database_tasks.to_csv('database_tasks.csv')
+                send_email()
+                st.success("Database esportato correttamente")
 
 
 
