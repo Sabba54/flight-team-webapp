@@ -1,7 +1,9 @@
 import ssl
 
 import streamlit as st
+from streamlit_lottie import st_lottie
 import pandas as pd
+import requests
 from db_fxn import create_table,add_task,view_all_task,view_unique_task,get_task,edit_task_data,delete_task
 import plotly.express as px
 import streamlit_authenticator as stauth
@@ -41,7 +43,13 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}<style>",unsafe_allow_html=True)
 local_css("style/style.css")
 
-maintenance = 'no'
+def load_lottieurl(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+maintenance = 'yes'
 if maintenance == 'no':
     st.title('Sapienza Flight Team WebApp ✈️')
 
@@ -230,7 +238,9 @@ if maintenance == 'no':
                 main()
 
 elif maintenance == 'yes':
-    pass
+    st.title('Siamo in Manutenzione. Riprovare più tardi!')
+    lottie = load_lottieurl('https://assets9.lottiefiles.com/private_files/lf30_y9czxcb9.json')
+    st_lottie(lottie,height=400,width=400,key='maintenance')
 
 
 
