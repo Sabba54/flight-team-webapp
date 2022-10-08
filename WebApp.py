@@ -238,7 +238,7 @@ if maintenance == 'no':
                 main()
 
 elif maintenance == 'yes':
-    st.title('Siamo in Manutenzione. Riprovare più tardi!')
+    st.title('Siamo in Manutenzione. Riprovare più tardi! ✈️')
     lottie = load_lottieurl('https://assets9.lottiefiles.com/private_files/lf30_y9czxcb9.json')
     st_lottie(lottie,height=400,width=400,key='maintenance')
 
