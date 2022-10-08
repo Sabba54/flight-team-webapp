@@ -108,7 +108,7 @@ if authentication_state:
                 st.subheader("Modifica o Aggiorna le Task 🛠")
 
                 result = view_all_task(team)
-                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza","Team"])
                 with st.expander("Task correnti"):
                     st.dataframe(df)
 
@@ -136,7 +136,7 @@ if authentication_state:
                         st.success("Task modificata correttamente!")
 
                 result2 = view_all_task(team)
-                df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza","Team"])
                 with st.expander("Task aggiornate"):
                     st.dataframe(df)
 
@@ -147,7 +147,7 @@ if authentication_state:
                 st.subheader("Elimina le task 🗑")
 
                 result = view_all_task(team)
-                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza","Team"])
                 with st.expander("Task correnti"):
                     st.dataframe(df)
 
@@ -161,7 +161,7 @@ if authentication_state:
                     st.success("La task è stata eliminata!")
 
                 result2 = view_all_task(team)
-                df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza"])
+                df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza","Team"])
                 with st.expander("Task aggiornate"):
                     st.dataframe(df)
 
