@@ -3,6 +3,7 @@ import ssl
 import streamlit as st
 import pandas as pd
 from db_fxn import create_table,add_task,view_all_task,view_unique_task,get_task,edit_task_data,delete_task
+from db_import_fxn import create_new_db
 import plotly.express as px
 import streamlit_authenticator as stauth
 import pickle
@@ -225,6 +226,7 @@ if authentication_state:
                 database_tasks.to_csv('database_tasks.csv')
                 send_email()
                 st.success("Database esportato correttamente")
+                create_new_db()
 
 
 
