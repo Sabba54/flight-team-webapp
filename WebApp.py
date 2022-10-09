@@ -49,7 +49,7 @@ def load_lottieurl(url):
         return None
     return r.json()
 
-maintenance = 'no'
+maintenance = 'yes'
 if maintenance == 'no':
     st.title('Sapienza Flight Team WebApp ✈️')
 
