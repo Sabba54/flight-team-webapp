@@ -15,10 +15,10 @@ from email.mime.multipart import  MIMEMultipart
 from email.mime.application import MIMEApplication
 from os.path import basename
 
-def send_email():
+def send_email(team):
     to_addr = 'sabatini.1834805@studenti.uniroma1.it'
     from_addr = 'matteo-sabatini@live.it'
-    subject = 'Updated DB'
+    subject = f'Updated DB da {team}'
     content = '...'
     msg = MIMEMultipart()
     msg['From'] = from_addr
@@ -198,7 +198,7 @@ if maintenance == 'no':
                 if st.sidebar.button("Esporta database"):
                     database_tasks = pd.DataFrame(view_all_task(team), columns=["Task", "Status", "Data_scadenza","Team"])
                     database_tasks.to_csv('database_tasks.csv',index=False)
-                    send_email()
+                    send_email(team)
                     st.success("Database esportato correttamente")
 
 
@@ -240,7 +240,7 @@ if maintenance == 'no':
 
                 if st.sidebar.button("Esporta database"):
                     database_tasks.to_csv('database_tasks.csv',index=False)
-                    send_email()
+                    send_email(team)
                     st.success("Database esportato correttamente")
 
 
