@@ -195,6 +195,15 @@ if maintenance == 'no':
                     with right_column:
                         st.empty()
 
+                if st.sidebar.button("Esporta database"):
+                    database_tasks = pd.DataFrame(view_all_task(team), columns=["Task", "Status", "Data_scadenza","Team"])
+                    database_tasks.to_csv('database_tasks.csv',index=False)
+                    send_email()
+                    st.success("Database esportato correttamente")
+
+
+
+
 
 
             if __name__ == '__main__':
