@@ -50,14 +50,14 @@ def load_lottieurl(url):
         return None
     return r.json()
 
-maintenance = 'yes'
+maintenance = 'no'
 
 if maintenance == 'no':
     st.title('Sapienza Flight Team WebApp ✈️')
 
 
-    teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE','VISION','ROVER']
-    usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN','VISION_team','ROVER_team']
+    teams = ['CAD','SOFTWARE','HARDWARE','ADMIN','VISION','GESTIONE']
+    usernames = ['CAD_team','SFTW_team','HRDW_team','Admin','VISION_team','GESTIONE_team']
 
     file_path = Path(__file__).parent / "hashed_pw.pkl"
     with file_path.open("rb") as file:
@@ -73,7 +73,7 @@ if maintenance == 'no':
         st.warning("Perfavore, inserisci username e password")
 
     if authentication_state:
-        if team in ['CAD','SOFTWARE','HARDWARE','VISION','ROVER']:
+        if team in ['CAD','SOFTWARE','HARDWARE','VISION','GESTIONE']:
 
 
             def main():
@@ -209,7 +209,7 @@ if maintenance == 'no':
             if __name__ == '__main__':
                 main()
 
-        elif team == 'GESTIONE':
+        elif team == 'ADMIN':
 
             def main():
                 menu = ['Situazione dei team']
@@ -219,7 +219,7 @@ if maintenance == 'no':
 
                 if choice == 'Situazione dei team':
                     st.subheader("Status dei task")
-                    selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','ROVER'])
+                    selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','GESTIONE'])
                     result = view_all_task(selected_team)
                     df = pd.DataFrame(result, columns=["Task", "Status", "Data_scadenza","Team"])
                     with st.expander("Status dei task del singolo team"):
@@ -229,7 +229,7 @@ if maintenance == 'no':
                     df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
                     df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
                     df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data_scadenza","Team"])
+                    df_rover = pd.DataFrame(view_all_task('GESTIONE'), columns=["Task", "Status", "Data_scadenza","Team"])
                     frames = [df_cad, df_sftw, df_hrdw, df_vision, df_rover]
                     database_tasks = pd.concat(frames)
 
