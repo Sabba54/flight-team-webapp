@@ -1,8 +1,20 @@
-Task,Status,Data_scadenza,Team
-ciao,Da fare,2022-10-08,CAD
-ciao,Da fare,2022-10-08,CAD
-prova 2,Terminata,2022-10-08,CAD
-1,Da fare,2022-10-08,SOFTWARE
-2,Da fare,2022-10-08,HARDWARE
-5,Da fare,2022-10-08,VISION
-6,Da fare,2022-10-08,ROVER
+Task,Status,Data di Inizio,Data di Scadenza,Percentuale di Avanzamento,Team
+Manutenzione strutturale del velivolo,Terminata,2022-11-06,2022-10-25,100,CAD
+Miglioramento della stabilità della deriva,Terminata,2022-11-06,2022-11-04,100,CAD
+Correzione orientamento ali,In corso,2022-11-06,2022-11-25,40,CAD
+Modularizzazione del velivolo,Da fare,2022-11-06,2023-02-24,0,CAD
+Progettazione e realizzazione del sistema di sgancio ,In corso,2022-11-06,2023-02-24,10,CAD
+Analisi ed eventuale realizzazione di migliorie strutturali ,In corso,2022-11-06,2022-11-18,50,CAD
+Ricalcolare il baricentro ,In corso,2022-11-06,2023-01-20,10,CAD
+Studio del software AVL,In corso,2022-11-06,2022-11-04,90,CAD
+prova vision 1,Da fare,Nov-06-2022,2022-11-26,0,VISION
+Test della detection and classification pipeline esistente ,In corso,2022-11-06,2022-11-14,60,VISION
+Comparazione YOLOv5 vs YOLOv7,Terminata,2022-11-06,2022-11-04,100,VISION
+Analisi dei sistemi di CV di team partecipanti a SUAS 2022,Terminata,2022-11-06,2022-11-04,100,VISION
+Scelta del sistema di stabilizzazione fotocamera,In corso,2022-11-06,2022-11-07,90,VISION
+test e implementazione di migliorie nella rete neurale,Da fare,2022-11-06,2022-11-28,0,VISION
+Training nuova rete neurale,Da fare,2022-11-06,2022-12-22,0,VISION
+Design sistema di stabilizzazione,Da fare,2022-11-06,2022-11-21,0,VISION
+Implementazione connessioni con GPS e autopilota per localizzazione,Da fare,2022-11-06,2022-11-25,0,VISION
+Scrittura algoritmo per localizzazione,Da fare,2022-11-06,2022-12-09,0,VISION
+Implementazione algoritmo per localizzazione nella pipeline,Da fare,2022-11-06,2022-12-22,0,VISION

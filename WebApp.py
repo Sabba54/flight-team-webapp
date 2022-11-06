@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 from db_fxn import create_table,add_task,view_all_task,view_unique_task,get_task,edit_task_data,delete_task
 import plotly.express as px
+import plotly.figure_factory as ff
 import streamlit_authenticator as stauth
 import pickle
 from pathlib import Path
@@ -14,6 +15,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import  MIMEMultipart
 from email.mime.application import MIMEApplication
 from os.path import basename
+from datetime import date
 
 def send_email(team):
     to_addr = 'sabatini.1834805@studenti.uniroma1.it'
@@ -55,9 +57,8 @@ maintenance = 'no'
 if maintenance == 'no':
     st.title('Sapienza Flight Team WebApp ✈️')
 
-
-    teams = ['CAD','SOFTWARE','HARDWARE','GESTIONE','VISION','ROVER']
-    usernames = ['CAD_team','SFTW_team','HRDW_team','ADMIN','VISION_team','ROVER_team']
+    teams = ['CAD', 'SOFTWARE', 'HARDWARE', 'ADMIN', 'VISION', 'GESTIONE']
+    usernames = ['CAD_team', 'SFTW_team', 'HRDW_team', 'Admin', 'VISION_team', 'GST_team']
 
     file_path = Path(__file__).parent / "hashed_pw.pkl"
     with file_path.open("rb") as file:
@@ -73,7 +74,7 @@ if maintenance == 'no':
         st.warning("Perfavore, inserisci username e password")
 
     if authentication_state:
-        if team in ['CAD','SOFTWARE','HARDWARE','VISION','ROVER']:
+        if team in ['CAD','SOFTWARE','HARDWARE','VISION','GESTIONE']:
 
 
             def main():
@@ -83,8 +84,11 @@ if maintenance == 'no':
                 st.sidebar.title(f"Benvenuto {team}")
 
                 create_table(team)
+                today = date.today()
+
 
                 if choice == "Crea Task":
+                    start_date = today.strftime("%Y-%m-%d")
                     st.subheader("Aggiungi le task che il team deve svolgere 📝")
 
                     # Layout
@@ -92,20 +96,22 @@ if maintenance == 'no':
 
                     with col1:
                         task = st.text_area("Task da fare")
+                        task_av = st.selectbox("Percentuale di avanzamento",["0","10","20","30","40","50","60","70","80","90","100"])
+
 
                     with col2:
                         task_status = st.selectbox("Status",["Da fare","In corso","Terminata"])
                         task_due_date = st.date_input("Data di scadenza")
 
                     if st.button("Aggiungi"):
-                        add_task(team,task,task_status,task_due_date,team)
+                        add_task(team,task,task_status,start_date,task_due_date,task_av,team)
                         st.success("Task aggiunta correttamente!")
 
 
                 elif choice == "Visualizza Task":
                     st.subheader("Visualizza le Task inserite 📊")
                     result = view_all_task(team)
-                    df = pd.DataFrame(result, columns=["Task", "Status", "Data_scadenza","Team"])
+                    df = pd.DataFrame(result, columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Visualizza tutti i task"):
                         st.dataframe(df)
 
@@ -121,7 +127,7 @@ if maintenance == 'no':
                     st.subheader("Modifica o Aggiorna le Task 🛠")
 
                     result = view_all_task(team)
-                    df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza","Team"])
+                    df = pd.DataFrame(result, columns=["Task", "Status","Data di Inizio", "Data di scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Task correnti"):
                         st.dataframe(df)
 
@@ -133,23 +139,28 @@ if maintenance == 'no':
                     if selected_result:
                         task = selected_result[0][0]
                         task_status = selected_result[0][1]
-                        task_due_date = selected_result[0][2]
+                        start_date = selected_result[0][2]
+                        task_due_date = selected_result[0][3]
+                        task_av = selected_result[0][4]
 
                         col1, col2 = st.columns(2)
 
                         with col1:
                             new_task = st.text_area("Task da fare",task)
+                            new_task_av = st.selectbox("Percentuale di Avanzamento",
+                                                   ["0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100"])
 
                         with col2:
-                            new_task_status = st.selectbox(task_status, ["Da fare", "In corso", "Terminata"])
-                            new_task_due_date = st.date_input(task_due_date)
+                            new_task_status = st.selectbox("Status", ["Da fare", "In corso", "Terminata"])
+                            new_start_date = today.strftime("%Y-%m-%d")
+                            new_task_due_date = st.date_input("Data di Scadenza")
 
                         if st.button("Modifica"):
-                            edit_task_data(team,new_task, new_task_status, new_task_due_date, task, task_status, task_due_date)
+                            edit_task_data(team,new_task, new_task_status,new_start_date, new_task_due_date,new_task_av, task, task_status,start_date, task_due_date,task_av)
                             st.success("Task modificata correttamente!")
 
                     result2 = view_all_task(team)
-                    df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza","Team"])
+                    df = pd.DataFrame(result2, columns=["Task", "Status","Data di Inizio", "Data di scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Task aggiornate"):
                         st.dataframe(df)
 
@@ -160,7 +171,7 @@ if maintenance == 'no':
                     st.subheader("Elimina le task 🗑")
 
                     result = view_all_task(team)
-                    df = pd.DataFrame(result, columns=["Task", "Status", "Data di scadenza","Team"])
+                    df = pd.DataFrame(result, columns=["Task", "Status","Data di Inizio", "Data di scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Task correnti"):
                         st.dataframe(df)
 
@@ -174,7 +185,7 @@ if maintenance == 'no':
                         st.success("La task è stata eliminata!")
 
                     result2 = view_all_task(team)
-                    df = pd.DataFrame(result2, columns=["Task", "Status", "Data di scadenza","Team"])
+                    df = pd.DataFrame(result2, columns=["Task", "Status","Data di Inizio", "Data di scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Task aggiornate"):
                         st.dataframe(df)
 
@@ -196,7 +207,7 @@ if maintenance == 'no':
                         st.empty()
 
                 if st.sidebar.button("Esporta database"):
-                    database_tasks = pd.DataFrame(view_all_task(team), columns=["Task", "Status", "Data_scadenza","Team"])
+                    database_tasks = pd.DataFrame(view_all_task(team), columns=["Task", "Status","Data di Inizio", "Data_scadenza","Percentuale di Avanzamento","Team"])
                     database_tasks.to_csv('database_tasks.csv',index=False)
                     send_email(team)
                     st.success("Database esportato correttamente")
@@ -209,7 +220,7 @@ if maintenance == 'no':
             if __name__ == '__main__':
                 main()
 
-        elif team == 'GESTIONE':
+        elif team == 'ADMIN':
 
             def main():
                 menu = ['Situazione dei team']
@@ -219,24 +230,30 @@ if maintenance == 'no':
 
                 if choice == 'Situazione dei team':
                     st.subheader("Status dei task")
-                    selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','ROVER'])
+                    selected_team = st.selectbox('Team',['CAD','SOFTWARE','HARDWARE','VISION','GESTIONE'])
                     result = view_all_task(selected_team)
-                    df = pd.DataFrame(result, columns=["Task", "Status", "Data_scadenza","Team"])
+                    df = pd.DataFrame(result, columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
                     with st.expander("Status dei task del singolo team"):
                         st.dataframe(df)
 
-                    df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    df_rover = pd.DataFrame(view_all_task('ROVER'), columns=["Task", "Status", "Data_scadenza","Team"])
-                    frames = [df_cad, df_sftw, df_hrdw, df_vision, df_rover]
+                    df_cad = pd.DataFrame(view_all_task('CAD'), columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
+                    df_sftw = pd.DataFrame(view_all_task('SOFTWARE'), columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
+                    df_hrdw = pd.DataFrame(view_all_task('HARDWARE'), columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
+                    df_vision = pd.DataFrame(view_all_task('VISION'), columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
+                    df_gst = pd.DataFrame(view_all_task('GESTIONE'), columns=["Task", "Status","Data di Inizio", "Data di Scadenza","Percentuale di Avanzamento","Team"])
+                    frames = [df_cad, df_sftw, df_hrdw, df_vision, df_gst]
                     database_tasks = pd.concat(frames)
 
                     with st.expander("Status dei task di tutti i team"):
-
-                        pl = px.bar(database_tasks,x='Team',color='Status')
-                        st.plotly_chart(pl)
+                        df_gantt = pd.DataFrame(result,
+                                          columns=["Task", "Status","Start", "Finish", "Complete",
+                                                   "Team"])
+                        df_gantt = df_gantt[(df_gantt['Status']=='In corso') | (df_gantt['Status']=='Da fare') ]
+                        df_gantt = df_gantt.drop('Status',axis=1)
+                        df_gantt = df_gantt.drop('Team',axis=1)
+                        df_gantt['Complete'] = df_gantt['Complete'].astype(int)
+                        fig = ff.create_gantt(df_gantt, index_col='Complete', show_colorbar=True)
+                        st.plotly_chart(fig)
 
                 if st.sidebar.button("Esporta database"):
                     database_tasks.to_csv('database_tasks.csv',index=False)
